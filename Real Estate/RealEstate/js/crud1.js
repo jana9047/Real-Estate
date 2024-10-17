@@ -1,6 +1,6 @@
-// Fetch tenants from the API and display them in the table
+
 function fetchTenants() {
-    fetch('http://localhost:9092/api/tenants') // Ensure this URL matches your API endpoint
+    fetch('http://localhost:9092/api/tenants') 
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -9,9 +9,9 @@ function fetchTenants() {
         })
         .then(data => {
             const tableBody = document.querySelector('#tenantTable tbody');
-            tableBody.innerHTML = ''; // Clear previous entries
+            tableBody.innerHTML = '';
 
-            // Loop through each tenant and create a row in the table
+           
             data.forEach(tenant => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -31,21 +31,20 @@ function fetchTenants() {
         });
 }
 
-// Call fetchTenants to load the initial data
+
 fetchTenants();
 
-// Handle form submission to add or update a tenant
 document.getElementById('tenantForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); 
 
-    const tenantId = document.getElementById('tenantId').value; // Hidden input to store tenant ID
+    const tenantId = document.getElementById('tenantId').value;
     const tenantName = document.getElementById('tenantName').value;
     const tenantEmail = document.getElementById('tenantEmail').value;
     const tenantPhone = document.getElementById('tenantPhone').value;
 
-    // Check if we're editing an existing tenant or adding a new one
+   
     if (tenantId) {
-        // Update existing tenant
+        
         fetch(`http://localhost:9092/api/tenants/${tenantId}`, {
             method: 'PUT',
             headers: {
@@ -61,15 +60,15 @@ document.getElementById('tenantForm').addEventListener('submit', function (event
         })
         .then(data => {
             console.log(data.message);
-            fetchTenants(); // Refresh the tenant list
-            document.getElementById('tenantForm').reset(); // Reset form fields
-            document.getElementById('tenantId').value = ''; // Reset hidden input for tenantId
+            fetchTenants();
+            document.getElementById('tenantForm').reset();
+            document.getElementById('tenantId').value = '';
         })
         .catch(error => {
             console.error('Error updating tenant:', error);
         });
     } else {
-        // Create new tenant
+       
         fetch('http://localhost:9092/api/tenants', {
             method: 'POST',
             headers: {
@@ -85,8 +84,8 @@ document.getElementById('tenantForm').addEventListener('submit', function (event
         })
         .then(data => {
             console.log(data.message);
-            fetchTenants(); // Refresh the tenant list
-            document.getElementById('tenantForm').reset(); // Reset form fields
+            fetchTenants(); 
+            document.getElementById('tenantForm').reset(); 
         })
         .catch(error => {
             console.error('Error adding tenant:', error);
@@ -94,7 +93,7 @@ document.getElementById('tenantForm').addEventListener('submit', function (event
     }
 });
 
-// Function to delete a tenant
+
 function deleteTenant(id) {
     fetch(`http://localhost:9092/api/tenants/${id}`, {
         method: 'DELETE'
@@ -107,20 +106,20 @@ function deleteTenant(id) {
     })
     .then(data => {
         console.log(data.message);
-        fetchTenants(); // Refresh the tenant list
+        fetchTenants(); 
     })
     .catch(error => {
         console.error('Error deleting tenant:', error);
     });
 }
 
-// Function to set the form for editing a tenant
+
 function editTenant(id, name, email, phone) {
-    document.getElementById('tenantId').value = id; // Hidden input to store tenant ID
+    document.getElementById('tenantId').value = id;
     document.getElementById('tenantName').value = name;
     document.getElementById('tenantEmail').value = email;
     document.getElementById('tenantPhone').value = phone;
 
-    // Optionally, scroll to the form for better UX
+
     document.getElementById('tenantForm').scrollIntoView({ behavior: 'smooth' });
 }
