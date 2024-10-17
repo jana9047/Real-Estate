@@ -6,19 +6,19 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 9091;
 
-// Middleware
+
 app.use(cors());
 app.use(bodyParser.json());
 
-// MySQL connection
+
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // Use your MySQL username
-    password: 'Jana@9047', // Use your MySQL password
-    database: 'Student' // Ensure the 'Student' database is created in MySQL
+    user: 'root',
+    password: 'Jana@9047', 
+    database: 'Student' 
 });
 
-// Connect to MySQL
+
 db.connect(err => {
     if (err) {
         console.error('Error connecting to MySQL:', err);
@@ -27,7 +27,7 @@ db.connect(err => {
     console.log('Connected to MySQL');
 });
 
-// GET properties (Read)
+
 app.get('/api/properties', (req, res) => {
     db.query('SELECT * FROM Estate', (err, results) => {
         if (err) {
@@ -39,7 +39,7 @@ app.get('/api/properties', (req, res) => {
     });
 });
 
-// POST property (Create)
+
 app.post('/api/properties', (req, res) => {
     const { propertyName, propertyAddress, propertyPrice } = req.body;
     db.query('INSERT INTO Estate (name, address, price) VALUES (?, ?, ?)',
@@ -54,7 +54,7 @@ app.post('/api/properties', (req, res) => {
         });
 });
 
-// DELETE property (Delete)
+// DELETE
 app.delete('/api/properties/:id', (req, res) => {
     const propertyId = req.params.id;
     db.query('DELETE FROM Estate WHERE id = ?', [propertyId], (err, results) => {
@@ -67,7 +67,7 @@ app.delete('/api/properties/:id', (req, res) => {
     });
 });
 
-// Server listen
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
