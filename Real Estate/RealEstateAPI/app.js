@@ -71,3 +71,31 @@ app.delete('/api/properties/:id', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
+
+
+
+// PUT property (Update)
+app.put('/api/properties/:id', (req, res) => {
+    const propertyId = req.params.id;
+    const { propertyName, propertyAddress, propertyPrice } = req.body;
+
+    // Validate input
+    if (!propertyName || !propertyAddress || !propertyPrice) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    // Update logic
+    db.query('UPDATE Estate SET name = ?, address = ?, price = ? WHERE id = ?',
+        [propertyName, propertyAddress, propertyPrice, propertyId],
+        (err, results) => {
+            if (err) {
+                console.error('Error updating property:', err);
+                res.status(500).json({ error: 'Database error' });
+            } else if (results.affectedRows === 0) {
+                res.status(404).json({ message: 'Property not found.' });
+            } else {
+                res.json({ message: 'Property updated successfully' });
+            }
+        });
+});
+
