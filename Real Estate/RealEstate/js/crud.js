@@ -1,6 +1,6 @@
-// Fetch properties from the API and display them in the table
+//fetch
 function fetchProperties() {
-    fetch('http://localhost:9091/api/properties') // Ensure this URL matches your API endpoint
+    fetch('http://localhost:9091/api/properties')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -9,9 +9,7 @@ function fetchProperties() {
         })
         .then(data => {
             const tableBody = document.querySelector('#propertyTable tbody');
-            tableBody.innerHTML = ''; // Clear previous entries
-
-            // Loop through each property and create a row in the table
+            tableBody.innerHTML = '';
             data.forEach(property => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -31,19 +29,17 @@ function fetchProperties() {
         });
 }
 
-// Call fetchProperties to load the initial data
 fetchProperties();
 
-// Handle form submission to add or update a property
+//  add or update 
 document.getElementById('propertyForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); 
 
-    const propertyId = document.getElementById('propertyId').value; // Hidden input to store property ID
+    const propertyId = document.getElementById('propertyId').value; 
     const propertyName = document.getElementById('propertyName').value;
     const propertyAddress = document.getElementById('propertyAddress').value;
     const propertyPrice = document.getElementById('propertyPrice').value;
 
-    // Check if we're editing an existing property or adding a new one
     if (propertyId) {
         // Update existing property
         fetch(`http://localhost:9091/api/properties/${propertyId}`, {
@@ -107,7 +103,7 @@ function deleteProperty(id) {
     })
     .then(data => {
         console.log(data.message);
-        fetchProperties(); // Refresh the property list
+        fetchProperties(); 
     })
     .catch(error => {
         console.error('Error deleting property:', error);
@@ -116,11 +112,11 @@ function deleteProperty(id) {
 
 // Function to set the form for editing a property
 function editProperty(id, name, address, price) {
-    document.getElementById('propertyId').value = id; // Hidden input to store property ID
+    document.getElementById('propertyId').value = id; 
     document.getElementById('propertyName').value = name;
     document.getElementById('propertyAddress').value = address;
     document.getElementById('propertyPrice').value = price;
 
-    // Optionally, scroll to the form for better UX
+
     document.getElementById('propertyForm').scrollIntoView({ behavior: 'smooth' });
 }
